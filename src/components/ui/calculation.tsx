@@ -2,7 +2,10 @@ import { DateTime } from "luxon";
 
 export default function Calculation( {date} : {date : Date | undefined} ){
 
+    if (!date) return null;
+
     const endAux = DateTime.now().toString().split('T')[0];
+    
     const startAux = date.toISOString().split('T')[0];
 
     const end = DateTime.fromISO(endAux)
