@@ -1,0 +1,36 @@
+body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5%;
+  text-align: center;
+}
+
+.header{
+    color: black;
+    font-size: 25px;
+    margin: 5%;
+}
+
+.inputClass{
+    margin-top: 5%;
+    margin-bottom: 5%;
+    justify-content: center;
+}
+
+.p-3{
+    padding: calc(var(--spacing) * 7);
+}
+
+.calculateButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5%;
+    width: 100%;
+}
+
+.calculation{
+    margin-top: 5%;
+    color: black;
+}

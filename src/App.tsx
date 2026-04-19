@@ -1,20 +1,84 @@
-import { Button } from "@/components/ui/button"
+import { useState } from "react"
+import { format } from "date-fns" 
+import { Button } from "./components/ui/button"
+import { Calendar } from "./components/ui/calendar"
+import { Input } from "./components/ui/input"
+import Calculation from "./components/ui/calculation"
+import './App.css'
+
+const formatDateForInput = (date: Date | undefined) => {
+  return date ? format(date, 'yyyy-MM-dd') : "";
+};
 
 export function App() {
+
+
+  const [date, setDate] = useState<Date | undefined>(new Date());
+
+  const [inputValue, setInputValue] = useState(formatDateForInput(new Date()));
+  
+  const [month, setMonth] = useState<Date>(new Date());
+  
+  const [show, setShow] = useState(false);
+
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+    const val = e.target.value; 
+    setInputValue(val); 
+
+    if (val) {
+      const [year, monthVal, day] = val.split('-');
+      const newDate = new Date(Number(year), Number(monthVal) - 1, Number(day));
+      
+      setDate(newDate);
+      setMonth(newDate);
+
+    } else {
+      setDate(undefined);
+    }
+    
+    setShow(false); 
+  }
+
+  const handleCalendar = (selectedDate: Date | undefined) => {
+    setDate(selectedDate); 
+    setInputValue(formatDateForInput(selectedDate)); 
+    setShow(false); 
+  }
+
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
-        </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
+    <>
+      <div className="header">
+        Age Calculator
       </div>
-    </div>
+
+      <div className="calendarCustom">
+        <p>Enter your birth date:</p>
+
+        <Input 
+          type="date" 
+          value={inputValue}
+          onChange={handleInput}
+          className="inputClass" 
+        />
+
+        <Calendar 
+          mode="single" 
+          selected={date} 
+          onSelect={handleCalendar} 
+          month={month}
+          onMonthChange={setMonth}
+        />
+      </div>
+
+      <Button className="calculateButton" onClick={ () => setShow(true) }>
+        Calculate
+      </Button>
+      
+      <div className="calculation">
+        { show && date && <Calculation date={date} /> }
+      </div>
+    </>
   )
 }
 
